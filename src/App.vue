@@ -6,6 +6,9 @@
 </template>
 
 <style lang="less">
+// 引入字体图标
+@import url('http://at.alicdn.com/t/font_1426139_h6vn3jbl5q.css');
+// 引入全局css样式
 *{
     margin:0;
     padding:0;
@@ -13,7 +16,9 @@
     
 a{
     color: inherit;
+    
 }
+
 
 a:hover{
     text-decoration: none;
