@@ -9,54 +9,73 @@
        </div>
       <!-- logo部分 -->
       <div class="ax_default">
-        <span class="iconfont iconnew"></span>
+        <span class="iconfont iconnew">
+          <!-- <img src="../assets/赛亚鼠.gif" alt=""> -->
+        </span>
       </div>
       <!-- 登录部分 -->
-      <div class="Inpu">
-       <form action="" class="frm">
-          <input type="text" v-model='mima.username' placeholder="用户名/手机号码">
-        <input type="password" v-model='mima.pass' placeholder="密码">
-       </form>
-      </div>
-
+      <Input 
+      textPlaceholder="用户名/手机号码" 
+      type="text"
+      errMsg="请输入正确的手机号"
+      rule="^1[3456789]\d{9}$"
+      @valChanged="setUsername"
+      >
+     
+      </Input>
+      <Input 
+      textPlaceholder="密码" 
+      type="password"
+      errMsg="请输入六到九位密码"
+      rule="^[a-z0-9_-]{6,18}$"
+      @valChanged="setPassword"
+      >
+      </Input>
       <!-- 登录按钮 -->
-      <div class="btn">
-        <button>登录</button>
-      </div>
+        <Button btnText='登录' @clicked="login"></Button>
      </div>
 </template>
 
 <script>
-
-
+import Input from '../components/Authinput.vue'
+import Button from '../components/Button.vue'
 export default {
-    data(){
-      return{
-        mima:{
-          username:'',
-          pass:''
-        }
-        
-      }
-    },
-    methods:{  
-      aaa(){
-        console.log(mima);
-        
-      }
+  data(){
+    return {
+      username:'',
+      password:'',
     }
+  },
+   components:{
+     Input,
+     Button
+   },
+   methods:{
+     login(){
+        // console.log('父组件接收到了子组件按钮的点击，触发自己的登录函数');
+        this.$axios({
+          
+        })
+     },
+  setUsername(username){
+    this.username=username
+  },
+  setPassword(password){
+    this.password=password
+  }
+   }
 }
 </script>
 
 <style lang="less">
 
-body{
-  background-color: #f2f2f2;
-}
+
 // 主体部分
 .content{
   width: 100vw;
+  height: 208.333vw;
   margin: 0 auto;
+  background-color: white;
 
 }
 // 头部部分
@@ -78,6 +97,7 @@ body{
   font-size: 7.5vw;
   border: 0;
   outline: none;
+  background-color: white;
 }
 
 // logo部分
@@ -92,42 +112,14 @@ body{
   font-size: 35vw;
   font-family: normal;
 }
+.ax_default img{
+  display: block;
+  width: 22.222vw;
+  height: 22.222vw;
+  margin: 0 auto;
+  border: 0.278vw solid #757575;
+  border-radius: 13.889vw;
+}
 
-.frm{
-  // display: flex;
-  // flex-wrap: wrap;
-  // width: 100%;
-  
-  text-align: center;
-}
-.Inpu input{
-  width: 88.333vw;
-  height: 11.111vw;
-  margin-bottom: 4.167vw;
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-  border-bottom: 1px solid #757575;
-  outline: none;
-  background-color: #f2f2f2;
-  font-size: 4.444vw;
 
-}
-.btn{
-  width: 88.333vw;
-  height: 13.333vw;
-}
-.btn button {
-  width: 88.333vw;
-  height: 13.333vw;
-  border-radius: 6.944vw;
-  outline: none;
-  background-color: #cc3300;
-  color: #f8e4dd;
-  border: 0;
-  font-size: 4.444vw;
-  cursor: pointer;
-  margin: 6.944vw;
-  // -webkit-tap-highlight-color: transparent; 
-}
 </style>
