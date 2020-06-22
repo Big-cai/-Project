@@ -14,20 +14,6 @@ export default {
 
       } 
     },
-    mounted(){
-      this.$axios({
-        url:'/login',
-        data:{
-          username:'',
-          password:''
-        },
-        // 请求方式
-        mounted:'POST '
-      }).then((res)=>{
-        console.log(res);
-        
-      })
-    }
 }
 </script>
 <style lang="less" scoped>
