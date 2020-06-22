@@ -4,9 +4,11 @@
       <div class="Inpu">
        <form action="" class="frm">
           <input 
-      
+          
+          :maxlength="maxlength"
           :type="type" :placeholder="textPlaceholder"
           v-model="inputVal"
+          @blur="showTop"
           >  
        </form>
       </div>
@@ -14,33 +16,40 @@
 
 <script>
 export default {
-  props:['textPlaceholder','type','rule','errMsg'],
+  props:['textPlaceholder','type','rule','errMsg','maxlength'],
   data(){
     return{
       inputVal:'',
-      isValid:true,
+      isValid:true ,
     }
   },
 
   watch:{
     inputVal(val){
       console.log(val);
-      // const phone=	/^[a-z0-9_-]{3,16}$/
+      // 1.利用接收回来的字符串创建一个正则对象
       const regExp=new RegExp(this.rule)
       const errMsg=this.errMsg
       this.isValid=regExp.test(val)
-
       if(!this.isValid){
         console.log(errMsg);
-       
+
+        
       }
         // 子传父
       this.$emit('valChanged',val)
-      // return phone.test(val)
+     
     }
   },
   methods:{
-    
+    showTop(){
+      if(!this.isValid){
+       this.$toast(this.errMsg)
+      
+       
+      }
+
+}
   }
 }
 </script>
@@ -53,7 +62,7 @@ export default {
   border-top: 0;
   border-left: 0;
   border-right: 0;
-  border-bottom: 1px solid #757575;
+  border-bottom: 1px solid ;
   outline: none;
   font-size: 4.444vw;
   background-color: white;
@@ -62,7 +71,4 @@ export default {
   text-align: center;
 }
 
-.error{
-  border-bottom-color: red;
-}
 </style>

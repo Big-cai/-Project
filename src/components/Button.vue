@@ -1,6 +1,6 @@
 <template>
   <div class="btn">
-        <button @click="hanClick">{{btnText}}</button>
+        <button @click="hanClick" class="fr">{{btnText}}</button>
   </div>
 </template>
 
@@ -11,7 +11,22 @@ export default {
       hanClick(){
         console.log('按钮子组件被处罚');
         this.$emit('clicked')
-      }
+
+      } 
+    },
+    mounted(){
+      this.$axios({
+        url:'/login',
+        data:{
+          username:'',
+          password:''
+        },
+        // 请求方式
+        mounted:'POST '
+      }).then((res)=>{
+        console.log(res);
+        
+      })
     }
 }
 </script>

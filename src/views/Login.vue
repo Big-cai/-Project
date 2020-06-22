@@ -15,15 +15,18 @@
       </div>
       <!-- 登录部分 -->
       <Input 
+      
+       maxlength="11"
       textPlaceholder="用户名/手机号码" 
       type="text"
       errMsg="请输入正确的手机号"
-      rule="^1[3456789]\d{9}$"
+      rule="^[a-zA-Z0-9_-]{4,16}$"
       @valChanged="setUsername"
       >
      
       </Input>
       <Input 
+      maxlength="16"
       textPlaceholder="密码" 
       type="password"
       errMsg="请输入六到九位密码"
@@ -44,6 +47,7 @@ export default {
     return {
       username:'',
       password:'',
+      
     }
   },
    components:{
@@ -52,10 +56,19 @@ export default {
    },
    methods:{
      login(){
-        // console.log('父组件接收到了子组件按钮的点击，触发自己的登录函数');
-        this.$axios({
+        console.log('父组件接收到了子组件按钮的点击，触发自己的登录函数');
+        // this.$axios({
+        //   url:'/personal',
+        //   method:'GET',
+        //   data:{
+           
+        //   }
+        // }).then((res)=>{
+        //   console.log(res);
+        // }).catch(err=>{
+        //   console.log(err);
           
-        })
+        // })
      },
   setUsername(username){
     this.username=username
