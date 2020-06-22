@@ -7,6 +7,8 @@ import Focus from '../views/Focus.vue'
 import Edit from '../views/Edit.vue'
 import Comments from '../views/comments.vue'
 import Collection from '../views/collection.vue'
+import Column from '../views/column.vue'
+import Index from '../views/index.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -41,6 +43,14 @@ Vue.use(VueRouter)
   {
     path:'/collection',
     component:Collection
+  },
+  {
+    path:'/column',
+    component:Column
+  },
+  {
+    path:'/index',
+    component:Index
   }
   
 ]
