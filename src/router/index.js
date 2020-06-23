@@ -21,34 +21,42 @@ Vue.use(VueRouter)
    component:Login
   },
   {
+    // 注册页面
     path:'/register',
     component:Register
   },
   {
+    // 个人主页
     path:'/personal',
     component:Personal
   },
   {
+    // 我的关注
     path:'/focus',
     component:Focus
   },
   {
+    // 编辑资料
     path:'/edit',
     component:Edit
   },
   {
+    // 我的跟帖
     path:'/comments',
     component:Comments 
   },
   {
+    // 我的收藏
     path:'/collection',
     component:Collection
   },
   {
+    // 栏目管理
     path:'/column',
     component:Column
   },
   {
+    // 新闻搜索
     path:'/index',
     component:Index
   }

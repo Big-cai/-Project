@@ -53,7 +53,21 @@
 </template>
 
 <script>
-export default {}
+export default {
+
+  mounted(){
+    this.$axios({
+      url:'http://127.0.0.1:3000/user/'+localStorage.getItem('userId'),
+      method:'get',
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem('token')
+    }
+    }).then(res=>{
+      console.log(res.data);
+      
+    })
+  }
+}
 </script>
 
 <style lang="less" scoped>
