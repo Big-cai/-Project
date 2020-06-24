@@ -9,11 +9,11 @@
       <!-- 中间部分 -->
       <div class="info">
         <span class="top">
-          <!-- <span class="iconfont iconxingbienan nan" v-if="userInfo.gender==1"></span> -->
-          <!-- <span class="iconfont iconxingbienv" v-else></span> -->
-         {{userInfo.nickname}}
+          <span class="iconfont iconxingbienan nan" v-if="userInfo.gender==1"></span>
+          <span class="iconfont iconxingbienv nv" v-else></span>
+          {{userInfo.nickname}}
         </span>
-        <!-- <span class="but">{{userInfo.create_date.split('T')[0]}}</span> -->
+        <span class="but">{{(userInfo.create_date).split('T')[0]}}</span>
       </div>
       <!-- 右边部分 -->
       <span class="iconfont iconjiantou1 jian"></span>
@@ -42,7 +42,13 @@
     descText=""
     >
     </Gegen>
-
+  
+       <Gegen
+    labelText="退出登录"
+    descText="注销用户"
+    @barClick="logout"
+    >
+    </Gegen>
   </div>
 </template>
 
@@ -54,13 +60,15 @@ export default {
   },
   data(){
     return{
-      userInfo:null
+      userInfo:{
+        create_date:''
+      }
     }
   },
   mounted(){
     this.$axios({
       url:"http://127.0.0.1:3000/user/"+localStorage.getItem('userId'),
-      method:'get',
+      method:'GET',
       headers:{
         Authorization: 'Bearer ' + localStorage.getItem('token')
       }
@@ -68,11 +76,23 @@ export default {
       console.log(res.data);
       const {message,data}=res.data;
       if(message=="获取成功"){
-
+          this.userInfo=data;
+          console.log(this.userInfo);
+          
       }else{
         this.$toast.fail('获取失败')
       }
     })
+  },
+  methods:{
+    
+    logout(){
+      // 清理数据
+      localStorage.removeItem('userId')
+      ;localStorage.removeItem('token')
+      // 2.跳转
+      this.$router.replace('/login')
+    }
   }
 }
 </script>
@@ -124,25 +144,7 @@ export default {
   }
 }
 
-// .list {
-
-//   li{
-//     height: 50px;
-//     line-height: 50px;
-//     border-bottom: 1px solid #b2b2b2;
-
-//     display: flex;
-//     padding: 0 4.167vw;
-//     box-sizing: border-box;
-
-//     span{
-//       flex: 1;
-//     }
-//   }
-// }
-// .huifu{
-//   text-align: right;
-//   color: #b2b2b2;
-//   font-size: 12px;
-// }
+.nv{
+  color: pink;
+}
 </style>

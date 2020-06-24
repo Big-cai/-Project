@@ -2,7 +2,7 @@
   <div>
     <div class="list">
       <ul>
-        <li>
+        <li @click="handelClick">
           <span class="guanzhu">{{labelText}}</span>
           <span class="huifu">
             {{descText}}
@@ -18,7 +18,7 @@
 export default {
   props:['labelText','descText'],
   methods:{
-    handelclick(){
+    handelClick(){
       this.$emit('barClick')
     }
   }

@@ -91,7 +91,7 @@ export default {
 
             const timer = setInterval(() => {
               // 某些定时器操作
-              this.$router.push('/login')
+              this.$router.relace('/login')
             }, 3000)
             // 通过$once来监听定时器
             // 在beforeDestroy钩子触发时清除定时器

@@ -113,8 +113,8 @@ export default {
         localStorage.setItem('userId', data.user.id)              
           const timer = setInterval(() => {
               // 某些定时器操作
-              this.$router.push("/personal");
-            }, 3000)
+              this.$router.replace("/personal");
+            }, 2000)
             // 通过$once来监听定时器
             // 在beforeDestroy钩子触发时清除定时器
             this.$once('hook:beforeDestroy', () => {
