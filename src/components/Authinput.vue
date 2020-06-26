@@ -6,7 +6,8 @@
           <input 
           
           :maxlength="maxlength"
-          :type="type" :placeholder="textPlaceholder"
+          :type="type" 
+          :placeholder="textPlaceholder"
           v-model="inputVal"
           @blur="showTop"
           >  
@@ -62,10 +63,11 @@ export default {
   border-top: 0;
   border-left: 0;
   border-right: 0;
-  border-bottom: 1px solid ;
+  border-bottom: 1px solid #a0c5e8;
   outline: none;
   font-size: 4.444vw;
   background-color: white;
+  color: #a0c5e8;
 }
 .frm{
   text-align: center;

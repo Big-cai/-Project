@@ -4,7 +4,7 @@
     <div class="nav"></div>
     <!-- 关闭-->
     <div class="cross">
-      <button class="iconfont iconicon-test"></button>
+      <button class="iconfont iconicon-test" @click="ntbOut"></button>
     </div>
     <!-- logo部分 -->
     <div class="ax_default">
@@ -56,6 +56,7 @@ export default {
     Button
   },
   methods: {
+  
     setUsername(username) {
       this.username = username
     },
@@ -91,7 +92,7 @@ export default {
 
             const timer = setInterval(() => {
               // 某些定时器操作
-              this.$router.relace('/login')
+              this.$router.replace('/login')
             }, 3000)
             // 通过$once来监听定时器
             // 在beforeDestroy钩子触发时清除定时器
@@ -104,11 +105,13 @@ export default {
           }
         })
         .catch(err => {})
-    }
+    },
+       ntbOut(){
+      this.$router.replace('/login')
+    },
   }
 }
 </script>
-
 <style lang="less">
 // 主体部分
 .content {
@@ -142,7 +145,7 @@ export default {
   width: 35vw;
   height: 35vw;
   margin: 0 auto;
-  color: #d81e06;
+  color: #a0c5e8;
 }
 .ax_default span {
   font-size: 35vw;

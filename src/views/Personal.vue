@@ -38,8 +38,9 @@
     </Gegen>
 
        <Gegen
-    labelText="设置"
+    labelText="编辑资料"
     descText=""
+    @barClick="rouzhuan"
     >
     </Gegen>
   
@@ -92,6 +93,9 @@ export default {
       ;localStorage.removeItem('token')
       // 2.跳转
       this.$router.replace('/login')
+    },
+    rouzhuan(){
+      this.$router.replace('/edit')
     }
   }
 }
@@ -129,11 +133,12 @@ export default {
       color: #78bbeb;
     }
     .top {
-     
+     font-size: 14px;
     }
     .but {
       font-size: 14px;
       color: #a2a2a2;
+      padding-left: 20px;
     }
   }
   .jian {

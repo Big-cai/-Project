@@ -33,8 +33,8 @@
     <Button btnText="登录" @clicked="login"></Button>
   
       <div class="too">
-        <a href="#">忘记密码</a>
-        <span @click="reig">注册</span>
+        <a href="#">忘记密码?</a>
+        <a @click="reig">注册</a>
       </div>
   </div>
   
@@ -64,7 +64,7 @@ export default {
       this.password = password
     },
     reig(){
-      console.log('出发时间');
+      console.log('触发');
       
        this.$router.push('/register')
     },
@@ -122,7 +122,7 @@ export default {
             })
           
           // 登陆成功 成功弹出提示框
-            this.$toast.success(message)
+            this.$toast.loading({mask:message,message:'加载中..'})
         } else {
           // 登录失败 失败弹出提示框
           this.$toast.fail(message)
@@ -196,15 +196,11 @@ export default {
   box-sizing: border-box;
   display: flex;
 
-  a,span {
-    margin: 0 12.5vw;
+  a{
+    text-align: center;
     flex: 1;
-    font-size: 12px;
-    color: #cc3300;
-    cursor: pointer;
-  }
- span{
-    text-align: right;
+    color: #51b7ec;
+    font-size: 3.889vw;
   }
 }
 </style>

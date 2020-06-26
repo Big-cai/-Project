@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="content"  v-if="userInfo">
       <!-- 编辑资料 -->
         <div class="Edit">
           <span class="iconfont iconjiantou"></span>
@@ -7,35 +7,85 @@
         </div>
         <!-- 头像 -->
         <div class="big">
-          <img src="../assets/赛亚鼠.gif" alt="">
+          <img  v-if="userInfo.head_img" :src="$axios.defaults.baseURL + userInfo.head_img" alt="">
+          <img v-else src="../assets/赛亚鼠.gif" alt="">
         </div>
         <!-- 昵称列表 -->
-        <ul>
-          <li>
-            <span class="nik">昵称</span>
-            <span class="biy">火星网友
-              <i class="iconfont iconjiantou1"></i>
-            </span>
-          </li>
-          <li>
-            <span class="nik">密码</span>
-            <span class="biy">******
-              <i class="iconfont iconjiantou1"></i>
-            </span>
-          </li>
-          <li>
-            <span class="nik">性别</span>
-            <span class="biy">男
-              <i class="iconfont iconjiantou1"></i>
-            </span>
-          </li>
-        </ul>
+        <Test  
+        @clicked='isShow=true'
+        btnText="昵称"
+        
+        :nickname="userInfo.nickname"
+        ></Test>
+         <Test  
+        @clicked='isShow=true'
+        btnText="密码"
+        
+        nickname="*****"
+        ></Test>
+         <Test  
+        @clicked='isShow=true'
+        btnText="性别"
+        :nickname="userInfo.gender==1? '男':'女'"
+        ></Test>
+    
+   <van-dialog v-model="isShow" title="修改昵称" show-cancel-button @confirm="setName">
+     <van-field v-model="ckname" placeholder="请输入新昵称" ></van-field>
+   </van-dialog>
+       
     </div>
 </template>
 
 <script>
+import Test from '../components/Topnav.vue'
 export default {
-
+  components:{
+    Test
+  },
+   created() {
+     this.$axios({
+       url:'/user/' +localStorage.getItem('userId'),
+       method:'get',
+       headers:{
+         Authorization: 'Bearer ' + localStorage.getItem('token')
+       }
+     }).then(res=>{
+       const {message,data}=res.data;
+       if(message=='获取成功'){
+         this.userInfo=data;
+         console.log(this.userInfo);
+         
+       }
+     })
+    },
+  data(){
+    return{
+      userInfo:null,
+      isShow:false,
+      ckname:''
+    }
+   
+  },
+  methods:{
+   setName(){
+     console.log('这是新昵称',this.ckname);
+    //  点击确定发送请求
+    // this.$axios({
+    //   url:'/user_update/' +localStorage.getItem('userId'),
+    //   method:'post',
+    //   data:{
+    //     nick:this.ckname
+    //   },
+    //   headers:{
+    //     Authorization:'Bearer'+localStorage.getItem('token')
+    //   }
+    // }).then(res=>{
+    //   console.log(res.data);
+      
+    // })
+   }
+  
+  }
 }
 </script>
 
@@ -70,27 +120,5 @@ export default {
     border-radius: 9.722vw;
   }
 // 列表
-ul {
-  padding: 0 4.167vw;
- margin-top:5.556vw;
 
-  li {
-    height: 60px;
-    line-height: 60px;
-     display: flex;
-     border-bottom: 1px solid #a0a0a0;
-
-
-    .nik {
-      flex: 2;
-    }
-    .biy{
-      text-align: right;
-      flex: 1;
-      font-size: 14px;
-      color: #a0a0a0;
-    }
-
-  }
-}
 </style>
