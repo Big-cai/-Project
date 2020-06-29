@@ -10,7 +10,7 @@ import Collection from '../views/collection.vue'
 import Column from '../views/column.vue'
 import Index from '../views/index.vue'
 import TopNav from '../components/Topnav.vue'
-
+import TestPage from '../views/ceShi/testPage.vue'
 Vue.use(VueRouter)
 
 
@@ -67,7 +67,10 @@ Vue.use(VueRouter)
     path:'/topNav',
     component:TopNav
   },
- 
+  {
+    path:'/testPage',
+    component:TestPage
+  }
   
 ]
 // 解决:在VUE中路由遇到Error: Avoided redundant navigation to current location:报错显示是路由重复，

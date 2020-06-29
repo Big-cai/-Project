@@ -1,20 +1,25 @@
 <template>
     <div class="constent">
       <!-- 头部搜索部分 -->
-        <div class="nav">
-          <div class="iconfont iconnew  logo">
-            
-          </div>
-          <div class="search">
-            <input type="text" placeholder="搜索新闻">
-          </div>
-          <div class="iconfont iconwode user">
-  
-          </div>
-        </div>
+       <Home/>
 
         <!-- 头部菜单 -->
-        <div class="navigation">
+        <van-tab
+        :title="category.name"
+        v-for="category in categoriesList"
+        :key="category.id"
+        >
+          <van-list
+          v-model="category.loading"
+          :finished="category.finished"
+          @load="loadMorePost"
+          :immediate-check="false"
+          finished-text="新闻"
+          >
+        
+          </van-list>
+        </van-tab>
+        <!-- <div class="navigation">
           <ul>
             <li>关注</li>
             <li>头条</li>
@@ -24,7 +29,7 @@
             <li>房产</li>
             <li class="iconfont iconjiantou1"></li>
           </ul>
-        </div>
+        </div> -->
         <!-- 新闻部分 -->
         <div class="new">
           <div class="listnew">
@@ -52,48 +57,24 @@
 </template>
 
 <script>
+import Home from '../components/Home.vue'
 export default {
-
+  components:{
+    Home
+  },
+  data(){
+    return{
+      categoriesList:[]
+    }
+  },
+  created(){
+    // 页面创建，获取栏目
+  },
 }
 </script>
 
 <style lang="less" scoped>
-    .nav{
-      width: 100vw;
-      height: 13.889vw;
-      display: flex;
-      background-color: #ff0000;
-
-    .logo{
-      text-align: center;
-      flex: 1;
-      color: white;
-      font-size: 50px;
- 
-    }
-    .search{
-      text-align: center;
-      flex: 3;
-
-      input {
-        text-align: center;
-        height: 9.444vw;
-        border-radius: 34px;
-        outline: none;
-        border: 0;
-        background: rgba(255, 255, 255, 0.5);
-        font-size: 14px;
-
-      }
-    
-    }
-    .user{
-      text-align: center;
-      flex: 1;
-      font-size: 25px;
-      color: white;
-    }
-    }
+   
 
     // 导航条
     ul{
@@ -125,8 +106,6 @@ export default {
        
      }
     }
-
- 
     .listnew2 {
       margin-top: 10px;
       padding: 0 4.167vw;

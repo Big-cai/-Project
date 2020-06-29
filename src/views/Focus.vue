@@ -12,40 +12,17 @@
     </div>
     <!-- 列表 -->
     <ul>
-      <li>
+      <li v-for="item in followsList" :key="item.id">
         <div class="touxiagn">
-          <img src="../assets/赛亚鼠.gif" alt />
+        <img v-if="item.head_img" :src="$axios.defaults.baseURL + item.head_img" alt />
+        <img v-else src="../assets/赛亚鼠.gif" alt />
         </div>
         <div class="conew">
-          <span class="conw">火星新闻播报</span>
-          <span class="but">2019-10-24</span>
+          <span class="conw">{{item.nickname}}</span>
+          <span class="but">{{item.create_date.split('T')[0]}}</span>
         </div>
         <div class="rigi">
-          <a href="#">取消关注</a>
-        </div>
-      </li>
-       <li>
-        <div class="touxiagn">
-          <img src="../assets/赛亚鼠.gif" alt />
-        </div>
-        <div class="conew">
-          <span class="conw">火星新闻播报</span>
-          <span class="but">2019-10-24</span>
-        </div>
-        <div class="rigi">
-          <a href="#">取消关注</a>
-        </div>
-      </li>
-       <li>
-        <div class="touxiagn">
-          <img src="../assets/赛亚鼠.gif" alt />
-        </div>
-        <div class="conew">
-          <span class="conw">火星新闻播报</span>
-          <span class="but">2019-10-24</span>
-        </div>
-        <div class="rigi">
-          <a href="#">取消关注</a>
+          <a href="#" @click="unfollow(item.id)">取消关注</a>
         </div>
       </li>
     </ul>
@@ -53,20 +30,42 @@
 </template>
 
 <script>
+import testPage from '../views/ceShi/testPage.vue'
 export default {
-
-  mounted(){
-    this.$axios({
-      url:'http://127.0.0.1:3000/user/'+localStorage.getItem('userId'),
-      method:'get',
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem('token')
+    components:{
+      testPage
+    },
+   data(){
+    return{
+      followsList:[],
     }
+  },
+  // 页面一开始就要加在数据
+  // 数据的获取可以放在
+  // created 或mounted
+created(){
+ this.loadPage()
+},
+methods:{
+  loadPage(){
+     this.$axios({
+    url:'/user_follows',
+    method:'get'
+  }).then(res=>{
+      console.log(res.data);
+      this.followsList=res.data.data
+  })
+  },
+  unfollow(id){
+    this.$axios({
+      url:'/user_unfollow/' + id,
     }).then(res=>{
       console.log(res.data);
-      
+      this.loadPage()
     })
   }
+}
+
 }
 </script>
 
@@ -103,9 +102,9 @@ ul {
   margin-top: 5.556vw;
 }
 ul li {
-  height: 16.667vw;
-  line-height: 16.667vw;
-  border-bottom: 2px solid #f2f2f2;
+  height: 70px;
+  line-height: 70px;
+  border-bottom: 1px solid #f2f2f2;
   display: flex;
 }
 // 左
@@ -128,10 +127,12 @@ ul li {
 }
 // 中下/
 .but {
+  width: 100%;
   height: 8.333vw;
   line-height: 6.944vw;
   font-size: 3.889vw;
   color: #888888;
+  
 }
 // 右
 .rigi {

@@ -15,27 +15,23 @@ import axios from 'axios'
 // 设置基准路径
 axios.defaults.baseURL='http://127.0.0.1:3000'
 
-// axios.interceptors.request.use(config=>{
-
-//   // 判断本地储存有token 但是请求配置没有就要加上
-//   if(localStorage.getItem('token')&& !config.headers.Authorization){
-//     config.headers.Authorization='Bearer' +
-//     localStorage.getItem('token')
-//   }
-//   return config
-// })
+axios.interceptors.request.use(config=>{
+  // 判断本地储存有token 但是请求配置没有就要加上
+  if(localStorage.getItem('token') && !config.headers.Authorization){
+    config.headers.Authorization= "Bearer " + localStorage.getItem('token')
+  }
+  return config
+})
 
 // 设置响应拦截器、
   import {Toast} from 'vant'
-
   axios.interceptors.response.use(res=>{
     console.log('发送了请求');
     // 对获取的数据进行处理
     const {statusCode,message} = res.data
     console.log(statusCode);
     console.log(message);
-
-    if(statusCode == 401){
+    if(message == '用户信息验证失败'){
       // 判断请求数据，状态是401的话，弹出提示框
       // 并删除本地储存的 token 和userId
       Toast.fail('用户信息校验失败，请重新登录')

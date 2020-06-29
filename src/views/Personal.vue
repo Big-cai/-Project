@@ -22,6 +22,7 @@
     <Gegen
     labelText="我的关注"
     descText="关注的用户"
+    @barClick="Focus"
     >
     </Gegen>
 
@@ -96,6 +97,9 @@ export default {
     },
     rouzhuan(){
       this.$router.replace('/edit')
+    },
+    Focus(){
+      this.$router.replace('/focus')
     }
   }
 }
