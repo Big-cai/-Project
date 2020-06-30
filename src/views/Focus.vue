@@ -12,7 +12,7 @@
     </div>
     <!-- 列表 -->
     <ul>
-      <li v-for="item in followsList" :key="item.id">
+      <li v-for="(item,index) in followsList" :key="item.id">
         <div class="touxiagn">
         <img v-if="item.head_img" :src="$axios.defaults.baseURL + item.head_img" alt />
         <img v-else src="../assets/赛亚鼠.gif" alt />
@@ -22,7 +22,8 @@
           <span class="but">{{item.create_date.split('T')[0]}}</span>
         </div>
         <div class="rigi">
-          <a href="#" @click="unfollow(item.id)">取消关注</a>
+          <a href="#" v-if="item.isFollow" @click="unfollow(item.id,index)">取消关注</a>
+          <button v-else class="btnfollow" @click="follow(item.id,index)">关注</button>
         </div>
       </li>
     </ul>
@@ -52,18 +53,34 @@ methods:{
     url:'/user_follows',
     method:'get'
   }).then(res=>{
-      console.log(res.data);
-      this.followsList=res.data.data
+      console.log(res.data.data);
+      // 用一个映射生成相同的用户列表
+    const newData =  res.data.data.map(user=>{
+        return {...user,isFollow:true}
+      })
+      console.log(newData);
+      
+      this.followsList=newData
   })
   },
-  unfollow(id){
+  unfollow(id,index){
     this.$axios({
       url:'/user_unfollow/' + id,
     }).then(res=>{
       console.log(res.data);
-      this.loadPage()
+      // this.loadPage()
+         this.followsList[index].isFollow=false
     })
-  }
+  },
+follow(id,index){
+   this.$axios({
+        url:'/user_follows/' + id,
+        method:'get'
+      }).then(res=>{
+        console.log(res.data.data);
+        this.followsList[index].isFollow=true;
+      })
+}
 }
 
 }
@@ -140,7 +157,7 @@ ul li {
   flex: 1;
 }
 // 右 里
-.rigi a {
+.rigi a:nth-child(1) {
   display: inline-block;
   width: 20.278vw;
   height: 8.333vw;
@@ -149,6 +166,19 @@ ul li {
   border-radius: 4.167vw;
   background-color: #e1e1e1;
   margin-top: 4.167vw;
+}
+.btnfollow{
+  display: inline-block;
+  width: 50px;
+  height: 8.333vw;
+  line-height: 8.333vw;
+  font-size: 3.889vw;
+  border-radius: 4.167vw;
+  background-color: red;
+  color: white;
+  margin-top: 4.167vw;
+  outline: none;
+  border: 0;
 }
 // 头像宽度样式
 ul img {

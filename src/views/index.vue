@@ -5,77 +5,129 @@
 
     <!-- 头部菜单 -->
     <van-tabs v-model="active">
-      <van-tab title="关注"></van-tab>
-      <van-tab title="头条"></van-tab>
-      <van-tab title="娱乐"></van-tab>
-      <van-tab title="体育"></van-tab>
-      <van-tab title="汽车"></van-tab>
-      <van-tab title="房产"></van-tab>
-    </van-tabs>
-    <!-- <div class="navigation">
-          <ul>
-            <li>关注</li>
-            <li>头条</li>
-            <li>娱乐</li>
-            <li>体育</li>
-            <li>汽车</li>
-            <li>房产</li>
-            <li class="iconfont iconjiantou1"></li>
-          </ul>
-    </div>-->
-    <!-- 新闻部分 -->
-    <div class="new">
-      <div class="listnew">
-        <p>林志玲穿透视黑纱裙米兰看秀</p>
-        <p>腹部微隆显孕味</p>
-        <span class="shibao">火星时报 &nbsp;&nbsp;52跟帖</span>
-      </div>
-    </div>
-    <div class="listnew2">
-      <p class="lh">亚马逊雨林为何燃烧？除了新总统“急功近利”的开发，国际资本才是真凶</p>
-      <div class="tu">
-        <img src="../assets/赛亚鼠.gif" alt />
-        <img src="../assets/赛亚鼠.gif" alt />
-        <img src="../assets/赛亚鼠.gif" alt />
-      </div>
-      <span class="shibao">火星时报 &nbsp;&nbsp;52跟帖</span>
-    </div>
+      <van-tab 
+      :title="category.name"
+       v-for="category in categoriesList"
+        :key="category.id">
+        <van-list
+       v-model="category.loading"
+       :finished="category.finished"
+       @load="loadMorePost"
+       :immediate-check="false"
+       finished-text="到底了~别再拉了"
+        >
+        <PostItem 
+        :postData="post" 
+        v-for="post in category.postList" 
+        :key="post.id"></PostItem>
 
-    <!-- 视频 -->
-    <div class="viod">
-      <span>美军与英军联合训练，6机编队阵容强大</span>
-      <img src="../assets/bofang.png" alt />
-    </div>
+        </van-list>
+      </van-tab>
+    </van-tabs>
+    <!-- 新闻部分 -->
+   
   </div>
 </template>
 
 <script>
 import Home from '../components/Home.vue'
+import PostItem from '../components/postitem.vue'
 export default {
   components: {
-    Home
+    Home,
+    PostItem
   },
   data() {
     return {
       categoriesList: [],
-      active:0
+      postList: [],
+      active: 0
     }
   },
   created() {
     // 页面创建，获取栏目
-    this.$axios({
-      url:'/category',
-      method:'get',
-    }).then(res=>{
-      console.log(res.data);
+    this.getCategories()
+  },
+  computed: {
+    categoryId() {
+      const currentCategory = this.categoriesList[this.active]
+      // 从中获取id
+      return currentCategory.id
+    }
+  },
+  watch: {
+    active() {
+      const currentCategory=this.categoriesList[this.active]
+      if(currentCategory.postList.length==0){
+
+        this.getPost()
+      }
+    }
+  },
+  methods: {
+    getCategories() {
+      this.$axios({
+        url: '/category',
+        method: 'get'
+      }).then(res => {
+        console.log(res.data)
+        // this.categoriesList = res.data.data
+        // 只获取完了栏目数据，才可以开始获取文章数据
+        // 获取文章数据，需要发送一个ajax请求，要另外封装一个函数
+        const newDate = res.data.data.map(category=>{
+          return {
+            ...category,
+            postList:[],
+            pageIndex:1,
+            pageSize:10,
+            loading:false,
+            finished:false
+          }
+        })
+        this.categoriesList=newDate;
+        console.log(this.categoriesList);
+        
+        this.getPost()
+      })
+    },
+    loadMorePost  (){
+      console.log('加载下一页');
       
-    })
+        const currentCategory=this.categoriesList[this.active]
+        currentCategory.pageIndex +=1
+        this.getPost();
+    }, 
+    getPost() {
+      const currentCategory =this.categoriesList[this.active]
+      this.$axios({
+        url: '/post',
+        params: {
+          category: this.categoryId,
+          pageIndex:currentCategory.pageIndex,
+          pageSize:currentCategory.pageSize,
+        }
+      }).then(res => {
+        console.log(res.data)
+        // this.postList = res.data.data
+        // 获取文章后，不应该放入公共data 中的 postList
+        // 而是放入当前激活栏目 的postList
+       currentCategory.postList=[...currentCategory.postList,...res.data.data]
+      // 这里加载完了文章列表数据，然后需要手动将当前栏目的加载状态改回false 也就是没有正在加载，这样子才能在下次拉到底的时候触发加载下一项
+       currentCategory.loading=false
+      //  最后如果发现数据已经到了尽头，应该告诉该组件已经完毕，禁止再次发送请求
+      if(res.data.data.length < currentCategory.pageSize){
+
+        currentCategory.finished=true
+      }
+
+      })
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
-// 导航条
+// // 导航条
 ul {
   width: 100vw;
   height: 12.5vw;

@@ -7,7 +7,7 @@
           <div class="search">
             <input type="text" placeholder="搜索新闻">
           </div>
-          <div class="iconfont iconwode user">
+          <div class="iconfont iconwode user" @click="$router.push('/personal')">
           </div>
     </div>
     <!-- tab栏 -->
