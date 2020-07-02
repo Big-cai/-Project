@@ -137,7 +137,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 // 主体部分
 .content {
   width: 100vw;

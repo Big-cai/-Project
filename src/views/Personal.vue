@@ -35,6 +35,7 @@
     <Gegen
     labelText="我的收藏"
     descText="文章/视频"
+    @barClick="$router.push('/collection')"
     >
     </Gegen>
 

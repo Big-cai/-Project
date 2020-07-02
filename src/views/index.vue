@@ -4,7 +4,7 @@
     <Home />
 
     <!-- 头部菜单 -->
-    <van-tabs v-model="active">
+    <van-tabs v-model="active"  sticky swipeable>
       <van-tab 
       :title="category.name"
        v-for="category in categoriesList"

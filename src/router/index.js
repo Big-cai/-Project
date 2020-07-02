@@ -11,6 +11,9 @@ import Column from '../views/column.vue'
 import Index from '../views/index.vue'
 import TopNav from '../components/Topnav.vue'
 import TestPage from '../views/ceShi/testPage.vue'
+import postData from '../views/postDeta.vue'
+import Comment from '../views/ceShi/Test.vue'
+import Text from '../components/digui.vue'
 Vue.use(VueRouter)
 
 
@@ -70,8 +73,18 @@ Vue.use(VueRouter)
   {
     path:'/testPage',
     component:TestPage
+  },
+  // 文章详情
+  {
+    path:'/postData/:id',
+    name:'postData',
+    component:postData
+  },
+  {
+    path:'/test',
+    name:'Comment',
+    component:Comment
   }
-  
 ]
 // 解决:在VUE中路由遇到Error: Avoided redundant navigation to current location:报错显示是路由重复，
   const originalPush = VueRouter.prototype.push

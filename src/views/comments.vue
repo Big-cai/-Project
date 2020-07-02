@@ -54,7 +54,7 @@
           </div>
 
           <div class="gengduo">
-            <span>更多贴吧
+            <span>更多跟贴
               <span class="iconfont iconjiantou1"></span>
               <span class="iconfont iconjiantou1"></span>
             </span>
