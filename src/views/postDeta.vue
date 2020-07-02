@@ -54,7 +54,7 @@
       <span class="iconfont  iconjiantou1 gtie"></span>
       <span class="iconfont  iconjiantou1 gtie"></span>
     </div>
-    <CommentInput :parentInfo="comInfo"/>
+    <CommentInput @reloadComment="loadComment" ref="commentput" :parentInfo="commentInfo"/>
   </div>
 </template>
 
@@ -70,27 +70,18 @@ export default {
     return {
       postDetail: {},
       commentList:[],
-      comInfo:''
+      commentInfo:{}
     }
   },
   created() {
     this.$axios({
       url: '/post/' + this.$route.params.id
     }).then(res => {
+      // 将结果数据存到 data 中
       this.postDetail = res.data.data
     })
 
-    // 获取文章评论列表
-    this.$axios({
-      url:'/post_comment/' + this.$route.params.id
-    }).then(res=>{
-      
-     const commentList = res.data.data;
-     if(commentList.length > 3){
-       commentList.length = 3;
-     }
-      this.commentList=commentList
-    })
+   this.loadComment();
   },
   methods:{
     handclick(){
@@ -131,11 +122,25 @@ export default {
           }
         })
     },
-      newhm(){
-      console.log('获取到了回复');
+      newhm(commentInfo){
+      // 获取到id 存起来，再交给 输入框
+      this.commentInfo=commentInfo;
+        console.log('获取到了该回复的id');
+        this.$refs.commentput.ShowTextarea()
+    },
+      loadComment(){
+         // 获取文章评论列表
+    this.$axios({
+      url:'/post_comment/' + this.$route.params.id
+    }).then(res=>{
       
-      
-    }
+     const commentList = res.data.data;
+     if(commentList.length > 3){
+       commentList.length = 3;
+     }
+      this.commentList=commentList
+    })
+    },
   }
   
 }

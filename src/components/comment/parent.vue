@@ -1,13 +1,17 @@
 <template>
   <div>
-    <Parent :parentData="parentData.parent" v-if="parentData.parent"/>
     <div class="parentCom">
+    <Parent 
+    :parentData="parentData.parent" 
+    v-if="parentData.parent"
+    @parentCallReply="diguiCallReply"
+    />
       <div class="info">
         <div class="user">
           {{parentData.user.nickname}}
           2小时前
         </div>
-        <div class="btnReply">
+        <div class="btnReply" @click="parentCallReply">
           回复
         </div>
       </div>
@@ -21,7 +25,19 @@
 <script>
 export default {
   name:'Parent',
-  props: ['parentData']
+  props: ['parentData'],
+  methods:{
+    parentCallReply(){
+      // 往父组件传id
+      this.$emit('parentCallReply',{
+        id:this.parentData.id,
+        nickname:this.parentData.user.nickname
+      })
+    },
+    diguiCallReply(parentInfo){
+      this.$emit('parentCallReply',parentInfo)
+    }
+  }
 }
 </script>
 
@@ -29,9 +45,9 @@ export default {
   .parentCom{
     font-size: 14px;
     color: #888;
-    padding: 10px;
-    margin: 10px;
-    border: 1px solid #e4e4e4;
+    padding: 5px;
+   
+    border: 1px solid pink;
   }
   .info{
     display: flex;

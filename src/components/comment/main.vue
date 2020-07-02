@@ -11,7 +11,11 @@
             回复
           </div>
       </div>
-       <Parent :parentData="commentData.parent" v-if="commentData.parent" />
+       <Parent 
+       :parentData="commentData.parent" 
+       v-if="commentData.parent" 
+       @parentCallReply="parentCallReply"
+       />
     <div class="content">  {{commentData.content}}</div>
     </div>
   </div>
@@ -26,9 +30,13 @@ export default {
   },
   methods:{
     callreply(){
-     this.$emit('callreply',this.commentData.id)
-     console.log('啦啦啦');
-     
+     this.$emit('callreply',{
+       id:this.commentData.id,
+       nickname:this.commentData.user.nackname
+     })
+    },
+    parentCallReply(parentInfo){
+      this.$emit('callreply',parentInfo)
     }
   }
 }

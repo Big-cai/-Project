@@ -8,6 +8,7 @@
         ref="textarea" 
         @blur="hideTextarea"
         v-model="content"
+        :placeholder="palceholderText"
         ></textarea>
          <div class="btnsend" @click="send">发送</div>
       </div>
@@ -16,7 +17,9 @@
     <!-- 未激活 -->
     <div class="footr" v-if="!isShowTextarea">
       <div class="coninput">
-        <input type="text" placeholder="写跟帖" @focus="ShowTextarea" :value="content"/>
+        <input 
+        type="text"  
+        @focus="ShowTextarea" :value="content" :placeholder="palceholderText"/>
         <span class="iconfont iconpinglun- fon"></span>
         <span class="iconfont iconshoucang fon"></span>
         <span class="iconfont iconfenxiang fon"></span>
@@ -28,10 +31,21 @@
 
 <script>
 export default {
+
   data(){
     return{
       isShowTextarea:false,
       content:''
+    }
+  },
+  props:['parentInfo'],
+  computed:{
+    palceholderText(){
+      if(this.parentInfo.nickname){
+        return  "回复 @ "  + this.parentInfo.user.nickname
+      }else{
+        return '写评论'
+      }
     }
   },
   methods:{
@@ -58,16 +72,20 @@ export default {
     send(){
       console.log(this.$route.params.id);
       console.log(this.content);
-      
+        let data={
+          content:this.content
+        }
+        if(this.parentInfo.id){
+          data.parent_id=this.parentInfo.id
+        }
         this.$axios({
             url:'/post_comment/' +this.$route.params.id,
             method:'post',
-            data:{
-              content:this.content
-            }
+            data
         }).then(res=>{
           console.log(res.data);
           if(res.data.message=='评论发布成功'){
+            this.$emit('reloadComment')
             this.content=''
           }
         })
