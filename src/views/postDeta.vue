@@ -2,7 +2,7 @@
   <div class="box">
     <div class="normalWrapper" v-if="postDetail.type==1">
       <div class="header">
-        <span class="iconfont iconjiantou2"></span>
+        <span class="iconfont iconjiantou2" @click="$router.back()"></span>
         <div class="btnnew">
           <span class="iconfont iconnew"></span>
         </div>
@@ -49,12 +49,12 @@
    
       
      <Comment @callreply="newhm" :commentData="item" v-for="item in commentList" :key="item.id"/>
-      <div class="gentie" @click="$router.push('/test'+$route.params.id)">
+      <div class="gentie" @click="$router.push('/test/'+$route.params.id)">
       更多跟帖
       <span class="iconfont  iconjiantou1 gtie"></span>
       <span class="iconfont  iconjiantou1 gtie"></span>
     </div>
-    <CommentInput @reloadComment="loadComment" ref="commentput" :parentInfo="commentInfo"/>
+    <CommentInput @reloadComment="loadComment" ref="commentInput" :parentInfo="commentInfo"/>
   </div>
 </template>
 
@@ -126,7 +126,7 @@ export default {
       // 获取到id 存起来，再交给 输入框
       this.commentInfo=commentInfo;
         console.log('获取到了该回复的id');
-        this.$refs.commentput.ShowTextarea()
+        this.$refs.commentInput.ShowTextarea()
     },
       loadComment(){
          // 获取文章评论列表

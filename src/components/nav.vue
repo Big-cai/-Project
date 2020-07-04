@@ -2,7 +2,7 @@
   <!-- 我的关注 -->
   <div class="myFocus" @clicked="hancj">
     <div class="jiantou">
-      <span class="iconfont iconjiantou" @click="$router.back()"></span>
+      <span class="iconfont iconjiantou" ></span>
     </div>
     <div class="cous">
       <h5>{{labelText}}</h5>

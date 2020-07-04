@@ -2,42 +2,23 @@
     <div class="comments">
       <!-- 头部 -->
         <div class="nav">
-          <span class="iconfont iconjiantou" ></span>
+          <span class="iconfont iconjiantou" @click="$router.back()"></span>
           <span>我的跟帖</span>
         </div>
 
         <!-- 跟帖部分 -->
-        <div class="comtie">
+        <div class="comtie" v-for="item in commentList" :key="item.id">
           <!-- 时间显示部分 -->
-          <div class="dat">
-            <span>2049-10-5</span>
-            <span>10:25</span>
+          <div class="dat" >
+            <span>{{item.create_date.split('T')[0]}}</span>
           </div>
-          <!-- 内容 -->
-          <div class="new1">
-            <span>
-              啊信是张信哲吗？张信哲是不是的张学友弟弟？
-            </span>
-          </div>
-          <!-- 原文、 -->
-          <div class="yannew">
-            <span>
-              原文：阿信分享《说好不哭》幕后故事：只听...
-            </span>
-            <span class="iconfont iconjiantou1"></span>
-          </div>
-
-          <div class="dat">
-            <span>2049-10-5</span>
-            <span>10:25</span>
-          </div>
-           <div class="new2">
+           <div class="new2" v-if="item.parent">
              <div class="box">
                <span>
-              回复：火星彩票研究院
+              回复：{{item.parent.user.nickname}}
             </span>
             <span class="hf">
-              <p>啊信是张信哲吗？张信哲是不是的张学友弟弟？</p>
+              <p>{{item.parent.content}}</p>
             </span>
              </div>
           </div>
@@ -49,24 +30,49 @@
           </div>
           <div class="yaun">
             <span>
-                原文：阿信分享《说好不哭》幕后故事：只听...
+                原文：{阿信分享《说好不哭》幕后故事：只听...
             </span>
           </div>
-
-          <div class="gengduo">
+        </div>
+         <div class="gengduo">
             <span>更多跟贴
               <span class="iconfont iconjiantou1"></span>
               <span class="iconfont iconjiantou1"></span>
             </span>
           </div>
-        </div>
-        
     </div>
 </template>
 
 <script>
+import Comment from '../components/comment/main'
+import CommentInput from '../components/comment/commentinput'
 export default {
-
+  components:{
+    Comment,
+    CommentInput
+  },
+  data(){
+    return{
+      commentList:[],
+      commentInfo:{}
+    }
+  },
+  created(){
+    this.$axios({
+      url:'/user_comments',
+    }).then(res=>{
+      console.log(res.data);
+      this.commentList=res.data.data
+    })
+  },
+  methods:{
+       newhm(commentInfo){
+      // 获取到id 存起来，再交给 输入框
+      this.commentInfo=commentInfo;
+        console.log('获取到了该回复的id');
+        this.$refs.commentput.ShowTextarea()
+    },
+  }
 }
 </script>
 
@@ -80,7 +86,7 @@ export default {
     background-color: #e4e4e4;
     padding: 0 4.167vw;
     display: flex;
-
+    align-items: center;
     
     span:nth-child(2){
       flex: 1;

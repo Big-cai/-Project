@@ -3,23 +3,21 @@
     <div class="commentErapper" v-if="isShowTextarea">
       <div class="enable">
         <!-- 已激活 -->
-        <textarea 
-        rows="3" 
-        ref="textarea" 
-        @blur="hideTextarea"
-        v-model="content"
-        :placeholder="palceholderText"
+        <textarea
+          rows="3"
+          ref="textarea"
+          @blur="hideTextarea"
+          v-model="content"
+          :placeholder="palceholderText"
         ></textarea>
-         <div class="btnsend" @click="send">发送</div>
+        <div class="btnsend" @click="send">发送</div>
       </div>
     </div>
 
     <!-- 未激活 -->
     <div class="footr" v-if="!isShowTextarea">
       <div class="coninput">
-        <input 
-        type="text"  
-        @focus="ShowTextarea" :value="content" :placeholder="palceholderText"/>
+        <input type="text" @focus="ShowTextarea" :value="content" :placeholder="palceholderText" />
         <span class="iconfont iconpinglun- fon"></span>
         <span class="iconfont iconshoucang fon"></span>
         <span class="iconfont iconfenxiang fon"></span>
@@ -31,77 +29,70 @@
 
 <script>
 export default {
-
-  data(){
-    return{
-      isShowTextarea:false,
-      content:''
+  data() {
+    return {
+      isShowTextarea: false,
+      content: ''
     }
   },
-  props:['parentInfo'],
-  computed:{
-    palceholderText(){
-      if(this.parentInfo.nickname){
-        return  "回复 @ "  + this.parentInfo.user.nickname
-      }else{
+  props: ['parentInfo'],
+  computed: {
+    palceholderText() {
+      if (this.parentInfo.nickname) {
+        return "回复 @ " + this.parentInfo.nickname
+      } else {
         return '写评论'
       }
     }
   },
-  methods:{
-    ShowTextarea(){
+  methods: {
+    ShowTextarea() {
       // 江苏局改为 true 让输入框弹出
-      this.isShowTextarea=true;
-      // 因为vue 的显示是根据生命周期循环
-      // 如果数据发生变化，就会触发代码执行，然后更新页面
-      // 跟jq 或原生，执行完每行代码结果马上显示的逻辑不通
-      // vue 实现执行完所有代码，再把页面更新的结果显示出来
-      // 这里需要等这次页面更新完毕，下一步的时候才开始聚焦
-      // vue 提供了一个函数，this.$nextTick()
-      this.$nextTick(()=>{
+      this.isShowTextarea = true
+  
+      this.$nextTick(() => {
         this.$refs.textarea.focus()
       })
     },
-    hideTextarea(){
-        setTimeout(() => {
-          
-          this.isShowTextarea=false
-        }, 100);
-      
+    hideTextarea() {
+      setTimeout(() => {
+        this.isShowTextarea = false
+      }, 100)
     },
-    send(){
-      console.log(this.$route.params.id);
-      console.log(this.content);
-        let data={
-          content:this.content
+    send() {
+      console.log(this.$route.params.id)
+      console.log(this.content)
+      let data = {
+        content: this.content
+      }
+      if (this.parentInfo.id) {
+        data.parent_id = this.parentInfo.id
+      }
+      this.$axios({
+        url: '/post_comment/' + this.$route.params.id,
+        method: 'post',
+        data
+      }).then(res => {
+        console.log(res.data)
+        if (res.data.message == '评论发布成功') {
+          this.$emit('reloadComment')
+          this.content = ''
         }
-        if(this.parentInfo.id){
-          data.parent_id=this.parentInfo.id
-        }
-        this.$axios({
-            url:'/post_comment/' +this.$route.params.id,
-            method:'post',
-            data
-        }).then(res=>{
-          console.log(res.data);
-          if(res.data.message=='评论发布成功'){
-            this.$emit('reloadComment')
-            this.content=''
-          }
-        })
+      })
     }
   }
 }
 </script>
 <style lang="less" scoped>
-
 .footr {
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 50px;
+  line-height: 50px;
   padding: 0 16px;
- 
+  background: #ccc;
+
   .coninput {
     display: flex;
     align-items: center;
@@ -115,7 +106,7 @@ export default {
       outline: none;
       border: none;
       font-size: 12px;
-      background-color: #d7d7d7;
+      background-color: white;
     }
     .fon {
       font-size: 22px;
@@ -126,17 +117,17 @@ export default {
   }
 }
 .xinxi {
-  position: fixed;
-  left: 228px;
-  bottom: 38px;
-  text-align: center;
-  width: 35px;
-  height: 15px;
-  line-height: 15px;
-  border-radius: 17px;
-  background: red;
-  color: white;
-  font-size: 12px;
+    position: fixed;
+    left: 215px;
+    bottom: 28px;
+    text-align: center;
+    width: 28px;
+    height: 13px;
+    line-height: 15px;
+    border-radius: 17px;
+    background: red;
+    color: white;
+    font-size: 12px;
 }
 
 .enable {
@@ -147,16 +138,17 @@ export default {
   padding: 2.778vw;
   box-sizing: border-box;
   display: flex;
- align-items: flex-end;
-  textarea{
+  align-items: flex-end;
+  background: #ccc;
+  textarea {
     flex: 1;
-    background-color: #d7d7d7;
+    background-color: white;
     border: none;
     outline: none;
     border-radius: 10px;
     padding: 12px;
   }
-  .btnsend{
+  .btnsend {
     height: 26px;
     line-height: 26px;
     border-radius: 16px;
@@ -165,6 +157,6 @@ export default {
     color: white;
     padding: 0 14px;
     margin: 0 10px;
-    }
+  }
 }
 </style>

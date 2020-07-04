@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 评论内容 -->
     <div class="minCom">
       <div class="info">
           <img src="../../assets/赛亚鼠.gif" alt="">
@@ -24,7 +25,7 @@
 <script>
 import Parent from './parent'
 export default {
-  props: ['commentData'],
+  props: ['commentData','labelText'],
   components: {
     Parent
   },
@@ -42,7 +43,10 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+
 .minCom {
+
+  max-width: 360px;
   font-size: 20px;
   color: #333;
   padding: 10px;

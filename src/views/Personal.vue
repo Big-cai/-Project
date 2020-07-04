@@ -29,6 +29,7 @@
     <Gegen
     labelText="我的跟帖"
     descText="跟帖/回复"
+    @barClick="$router.push('/comments')"
     >
     </Gegen>
 

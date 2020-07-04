@@ -14,6 +14,8 @@ import TestPage from '../views/ceShi/testPage.vue'
 import postData from '../views/postDeta.vue'
 import Comment from '../views/ceShi/Test.vue'
 import Text from '../components/digui.vue'
+// 搜索页
+import Search from '../views/SearchPage.vue' 
 Vue.use(VueRouter)
 
 
@@ -49,6 +51,7 @@ Vue.use(VueRouter)
   {
     // 我的跟帖
     path:'/comments',
+    name:'Comments',
     component:Comments 
   },
   {
@@ -81,9 +84,14 @@ Vue.use(VueRouter)
     component:postData
   },
   {
-    path:'/test',
+    path:'/test/:id',
     name:'Comment',
     component:Comment
+  },
+  {
+    path:'/search',
+    name:'Search',
+    component:Search
   }
 ]
 // 解决:在VUE中路由遇到Error: Avoided redundant navigation to current location:报错显示是路由重复，

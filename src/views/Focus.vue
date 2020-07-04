@@ -3,9 +3,9 @@
     <!-- 我的关注 -->
     <div class="myFocus">
       <div class="jiantou">
-        <span class="iconfont iconjiantou"></span>
+        <span class="iconfont iconjiantou" @click="$router.push('/personal')"></span>
       </div>
-      <div class="cous">
+      <div class="cous" >
         <h5>我的关注</h5>
       </div>
       <div class="emppty"></div>

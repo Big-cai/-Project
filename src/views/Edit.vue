@@ -2,7 +2,7 @@
   <div class="content" v-if="userInfo">
     <!-- 编辑资料 -->
     <div class="Edit">
-      <span class="iconfont iconjiantou"></span>
+      <span class="iconfont iconjiantou"@click="$router.back('/personal')"></span>
       <h5 btnText="编辑资料"></h5>
     </div>
     <!-- 头像 -->
