@@ -65,21 +65,21 @@ export default {
     }
   },
   methods: {
+    
     getCategories() {
-      this.$axios({
-        url: '/category',
-        method: 'get'
-      }).then(res => {
-        console.log(res.data)
-        // this.categoriesList = res.data.data
-        // 只获取完了栏目数据，才可以开始获取文章数据
-        // 获取文章数据，需要发送一个ajax请求，要另外封装一个函数
-        const newDate = res.data.data.map(category=>{
+        const enabelaList=localStorage.getItem('enabelaList')
+        if(enabelaList){
+          const res={
+            data:{
+                data:JSON.parse(enabelaList) 
+            }
+          }
+           const newDate = res.data.data.map(category=>{
           return {
             ...category,
             postList:[],
             pageIndex:1,
-            pageSize:10,
+            pageSize:5,
             loading:false,
             finished:false
           }
@@ -88,7 +88,28 @@ export default {
         console.log(this.categoriesList);
         
         this.getPost()
-      })
+        }else{
+          
+          this.$axios({
+            url: '/category',
+            method: 'get'
+          }).then(res => {
+            console.log(res.data)
+            const newDate = res.data.data.map(category=>{
+              return {
+                ...category,
+                postList:[],
+                pageIndex:1,
+                pageSize:10,
+                loading:false,
+                finished:false
+              }
+            })
+            this.categoriesList=newDate;
+            console.log(this.categoriesList);      
+            this.getPost()
+          })
+        }
     },
     loadMorePost  (){
       console.log('加载下一页');

@@ -1,17 +1,17 @@
 <template>
   <div class="content">
     <!-- 头部标题 -->
-   <Nav
-    labelText='我的栏目'
-   />
-   <!-- 栏目 -->
+    <Nav labelText="我的栏目" />
+    <!-- 栏目 -->
     <div class="lan">
       <span class="del">点击删除一下频道</span>
       <ul>
         <li>
-          <div class="item item-del" 
-          v-for="(item,index) in enabela" :key="item.id"
-          @click="disabledel(index)"
+          <div
+            class="item item-del"
+            v-for="(item,index) in enabela"
+            :key="item.id"
+            @click="disabledel(index)"
           >{{item.name}}</div>
         </li>
       </ul>
@@ -20,11 +20,12 @@
       <span class="del">点击添加一下频道</span>
       <ul>
         <li>
-          <div class="item item-del"
-            v-for="(item,index) in disadel" :key="item.id"
+          <div
+            class="item item-del"
+            v-for="(item,index) in disadel"
+            :key="item.id"
             @click="Add_columns(index)"
           >{{item.name}}</div>
-         
         </li>
       </ul>
     </div>
@@ -34,49 +35,64 @@
 <script>
 import Nav from '../components/nav'
 export default {
-  components:{
-      Nav
+  components: {
+    Nav
   },
   data() {
     return {
       enabela: [],
-      disadel:[]
+      disadel: []
+    }
+  },
+  watch:{
+    enabela(){
+      localStorage.setItem('enabelaList', JSON.stringify(this.enabela))
+    },
+    disadel(){
+       localStorage.setItem('disadelList', JSON.stringify(this.disadel))
     }
   },
   created() {
-    // 渲染栏目数据
-    this.$axios({
-      url: '/category'
-    }).then(res => {
-      console.log(res.data)
-      this.enabela = res.data.data
+    const enabelaList = localStorage.getItem('enabelaList')
+    const disadelList = localStorage.getItem('disadelList')
+    if(enabelaList){
+      this.enabela=JSON.parse(enabelaList)
+      this.disadel=JSON.parse(disadelList)
+    }else{
+      // 渲染栏目数据
+      this.$axios({
+        url: '/category'
+      }).then(res => {
+        console.log(res.data)
+        this.enabela = res.data.data
     })
+    }
   },
-  methods:{
+
+  methods: {
     // 点击删除
-    disabledel(index){
-        // 3.判断当删除只剩下最后一个时，就不能删除了
-      if(this.enabela.length===1){
-        return;
+    disabledel(index) {
+      // 3.判断当删除只剩下最后一个时，就不能删除了
+      if (this.enabela.length === 1) {
+        return
       }
       // 1.当点击删除栏目的按钮，就把这个按钮栏目移除到另一个数组中
       this.disadel.push(this.enabela[index])
       // 2.当点击这个删除元素后，让他在原来的数组消失
-      this.enabela.splice(index,1)
+      this.enabela.splice(index, 1)
     },
-    Add_columns(index){
+    Add_columns(index) {
       // 添加之后把当前添加的元素从数组移除到另一个数组
-        this.enabela.push(this.disadel[index])
-        // 删除在原来数组中的元素
-        this.disadel.splice(index,1)
-  
+      this.enabela.push(this.disadel[index])
+      // 删除在原来数组中的元素
+      this.disadel.splice(index, 1)
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.content{
+.content {
   box-sizing: border-box;
 }
 .box {
@@ -86,14 +102,13 @@ export default {
   display: flex;
   align-items: center;
 
-  .jiantou{
+  .jiantou {
     flex: 1;
   }
 
-  .title{
+  .title {
     flex: 1;
   }
-
 }
 .del {
   display: inline-block;
