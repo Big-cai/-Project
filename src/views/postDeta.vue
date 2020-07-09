@@ -1,5 +1,6 @@
 <template>
   <div class="box">
+   
     <div class="normalWrapper" v-if="postDetail.type==1">
       <div class="header">
         <span class="iconfont iconjiantou2" @click="$router.back()"></span>
@@ -38,8 +39,10 @@
       </div>
       <div class="title">{{postDetail.title}}</div>
     </div>
+    <!-- 点赞功能 -->
     <div class="buttonsWrapper">
-      <div class="btn btndianzhan" @click="hangou">
+      <div class="btn btndianzhan" 
+      @click="hangou" :class="[!this.postDetail.like_length < 1 ? 'clas' : '' ]">
         <span class="iconfont icondianzan"></span>{{postDetail.like_length}}
       </div>
       <div class="btn weixin">
@@ -59,12 +62,14 @@
 </template>
 
 <script>
+
 import Comment from '../components/comment/main'
 import CommentInput from '../components/comment/commentinput'
 export default {
   components:{
     Comment,
-    CommentInput
+    CommentInput,
+
   },
   data() {
     return {
@@ -147,12 +152,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 .normalWrapper {
-  padding: 0 16px;
-  box-sizing: border-box;
   .header {
+    width: 100vw;
     display: flex;
     align-items: center;
+    background-color: #e0e0e0;
+    padding: 0 16px;
+    box-sizing: border-box;
 
     .btnnew {
       flex: 1;
@@ -177,17 +185,23 @@ export default {
 .title {
   font-size: 14px;
   font-weight: bold;
+  padding: 15px 16px;
+    box-sizing: border-box;
 }
 .info {
+  
   font-size: 14px;
   color: #bbb;
-  padding: 10px 0 16px;
+  padding: 10px 16px;
+  box-sizing: border-box;
 }
 /deep/ img {
+  
   width: 100%;
 }
 /deep/ .content {
   width: 100%;
+  
 }
 .buttonsWrapper {
   display: flex;
@@ -217,9 +231,13 @@ export default {
     }
   }
 }
+.mainContent{
+      padding: 0 16px;
+    }
 .videoWrapper {
   .player {
     width: 100vw;
+    
   }
   .info {
     padding: 0 16px;
@@ -232,6 +250,7 @@ export default {
       align-content: center;
       
     }
+    
     .btnFollw {
       border: 1px solid #e4e4e4;
       padding: 4px 10px;
@@ -263,5 +282,9 @@ export default {
   .gtie{
     margin-right: -10px;
   }
+}
+.clas{
+  background: red;
+  color: white;
 }
 </style>

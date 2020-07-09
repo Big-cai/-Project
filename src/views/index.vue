@@ -89,7 +89,6 @@ export default {
         
         this.getPost()
         }else{
-          
           this.$axios({
             url: '/category',
             method: 'get'

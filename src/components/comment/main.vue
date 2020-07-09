@@ -33,7 +33,7 @@ export default {
     callreply(){
      this.$emit('callreply',{
        id:this.commentData.id,
-       nickname:this.commentData.user.nackname
+       nickname:this.commentData.user.nickname
      })
     },
     parentCallReply(parentInfo){

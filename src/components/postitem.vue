@@ -3,17 +3,17 @@
     <!-- 三种文章类型区分方式，数据中 type 如果是1就是普通文章
     按照 cover 属性的长度，如果小于三，就显示一张图片的格式
     -->
-    <div class="singleImg" v-if="postData.type==1 && postData.cover.length<3">
+    <div  class="singleImg" v-if="postData.type==1 && (postData.cover.length<3&&postData.cover.length>0)">
       <div class="left">
         <div class="title">{{postData.title}}</div>
         <div class="info">{{postData.user.nickname}} 
           {{postData.comment_length}}跟帖</div>
       </div>
-      <img :src="postData.cover[0].url" alt class="rigth" />
+      <img :src="postData.cover[0].url | fixImgUrl" alt class="rigth" />
     </div>
 
 
-    <div class="multiImg" v-if="postData.type==1 &&postData.cover.length>=3">
+    <div class="multiImg" v-if="postData.type==1 && postData.cover.length>=3">
       <div class="title">
         {{postData.title}}
       </div>

@@ -3,7 +3,7 @@
     <!-- 头部搜索 -->
     <div class="header">
       <!-- 箭头 -->
-      <div class="arrow"@click="Goback">
+      <div class="arrow" @click="$router.replace('/index')">
         <span class="iconfont iconjiantou"></span>
       </div>
       <!-- 搜索框 -->
@@ -16,12 +16,12 @@
         <button @click="search_tz">搜索</button>
       </div>
     </div>
-  <div class="content" v-if="results.length==0">
+  <div class="content" v-if="results.length == 0">
       <!-- 历史记录 -->
     <div class="historical_record" >
       <h4>历史记录</h4>
       <ul class="history list">
-        <li v-for="(item,index) in history" :key="index">
+        <li @click="sendtion(item)" v-for="(item,index) in history" :key="index">
           {{item}}
         </li>
       </ul>
@@ -59,6 +59,12 @@ export default {
       holo: ['福寿螺疯狂入侵洱海', 'BLACKPINK舞台', '登月梦想发射计划', '关晓彤', '阿信', '美女', '游戏']
     }
   },
+  create(){
+      const historyStorage = localStorage.getItem('history');
+      if(historyStorage){
+        this.history = JSON.parse(historyStorage)
+      }
+  },
  
   watch: {
    keyword(val){
@@ -67,12 +73,7 @@ export default {
      }
    }
     },
-     mounted(){
-      const historyStorage = localStorage.getItem('history')
-      if(historyStorage){
-        this.history=JSON.parse(historyStorage)
-      }
-    },
+
     history(){
         localStorage.setItem('history',JSON.stringify(this.history))
     },
@@ -91,7 +92,7 @@ export default {
         if (this.history.indexOf(this.keyword) == -1) {
           this.history.push(this.keyword)
         }
-          console.log(res.history)
+       
         this.results=res.data.data
       })
     },
@@ -99,26 +100,15 @@ export default {
       this.keyword = item;
       this.search_tz()
     },
-    Goback(){
-      if(this.results.legnth == 0){
-        this.$router.push('/index')
-      }else{
-        this.keyword = ''
-      }
-    }
+   
   }
 }
 </script>
 
 <style lang="less" scoped>
-// .bgm {
-//   height: 691px;
-//   background: #ccc;
-// }
+
 // 头部总体样式
 .header {
-  // position: fixed;
-  // top: 0;
   width: 100%;
   height: 50px;
   background: #77ddff;

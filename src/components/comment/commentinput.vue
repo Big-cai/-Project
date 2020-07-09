@@ -19,7 +19,10 @@
       <div class="coninput">
         <input type="text" @focus="ShowTextarea" :value="content" :placeholder="palceholderText" />
         <span class="iconfont iconpinglun- fon"></span>
-        <span class="iconfont iconshoucang fon"></span>
+        <span class="iconfont iconshoucang fon"
+        @click="chanSend"
+        
+        ></span>
         <span class="iconfont iconfenxiang fon"></span>
       </div>
       <span class="xinxi">1024</span>
@@ -32,19 +35,26 @@ export default {
   data() {
     return {
       isShowTextarea: false,
-      content: ''
+      content: '',
     }
   },
+  created(){{
+   
+    
+  }},
   props: ['parentInfo'],
   computed: {
     palceholderText() {
       if (this.parentInfo.nickname) {
         return "回复 @ " + this.parentInfo.nickname
+        // console.log(this.parentInfo.nickname);
+        
       } else {
         return '写评论'
       }
     }
   },
+ 
   methods: {
     ShowTextarea() {
       // 江苏局改为 true 让输入框弹出
@@ -79,6 +89,19 @@ export default {
           this.content = ''
         }
       })
+    },
+    // 收藏部分 
+    chanSend(){ 
+      this.$axios({
+        url:'/post_star/'+ this.$route.params.id ,
+        method:'GET',
+        data:{
+          id:''
+        },
+      }).then(res=>{
+        console.log(res.data);
+        
+      })
     }
   }
 }
@@ -107,6 +130,9 @@ export default {
       border: none;
       font-size: 12px;
       background-color: white;
+    }
+    .commentErapper{
+      height: 50px;
     }
     .fon {
       font-size: 22px;
@@ -141,6 +167,7 @@ export default {
   align-items: flex-end;
   background: #ccc;
   textarea {
+    height: 50px;
     flex: 1;
     background-color: white;
     border: none;
@@ -158,5 +185,8 @@ export default {
     padding: 0 14px;
     margin: 0 10px;
   }
+}
+.clas{
+  background: red;
 }
 </style>

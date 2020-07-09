@@ -111,16 +111,10 @@ export default {
           // 登陆成功后，把token和id保存到本地
         localStorage.setItem('token', data.token)
         localStorage.setItem('userId', data.user.id)              
-          const timer = setInterval(() => {
-              // 某些定时器操作
-              this.$router.replace("/personal");
-            }, 2000)
-            // 通过$once来监听定时器
-            // 在beforeDestroy钩子触发时清除定时器
-            this.$once('hook:beforeDestroy', () => {
-              clearInterval(timer)
-            })
+               // 某些定时器操作
+              this.$router.replace("/index");
           
+         
           // 登陆成功 成功弹出提示框
             this.$toast.loading({mask:message,message:'加载中..'})
         } else {

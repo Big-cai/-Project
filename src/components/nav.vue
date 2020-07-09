@@ -1,7 +1,7 @@
 <template>
   <!-- 我的关注 -->
   <div class="myFocus" @clicked="hancj">
-    <div class="jiantou">
+    <div class="jiantou" @click="$router.back()">
       <span class="iconfont iconjiantou" ></span>
     </div>
     <div class="cous">

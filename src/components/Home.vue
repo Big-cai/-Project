@@ -25,6 +25,7 @@ export default {
       width: 100vw;
       height: 13.889vw;
       display: flex;
+      align-items: center;
       background-color: #ff0000;
 
     .logo{
