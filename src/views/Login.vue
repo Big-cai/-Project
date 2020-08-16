@@ -112,7 +112,7 @@ export default {
         localStorage.setItem('token', data.token)
         localStorage.setItem('userId', data.user.id)              
                // 某些定时器操作
-              this.$router.replace("/index");
+              this.$router.push("/index");
           
          
           // 登陆成功 成功弹出提示框

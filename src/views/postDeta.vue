@@ -1,21 +1,18 @@
 <template>
   <div class="box">
-   
     <div class="normalWrapper" v-if="postDetail.type==1">
       <div class="header">
-        <span class="iconfont iconjiantou2" @click="$router.back()"></span>
         <div class="btnnew">
-          <span class="iconfont iconnew"></span>
+          <span class="iconfont iconjiantou2 " @click="$router.back()"></span>
+          <span class="iconfont iconnew Newtitle"></span>
         </div>
-        <div 
+        <div
           class="btnFollow"
           :class="{highlight:!postDetail.has_follow}"
-         @click="handclick"
-        >
-        {{postDetail.has_follow?'已关注':'关注'}}
-        
-        </div>
+          @click="handclick"
+        >{{postDetail.has_follow?'已关注':'关注'}}</div>
       </div>
+
       <div class="title">{{postDetail.title}}</div>
       <div class="info">
         {{postDetail.user.nickname}}
@@ -41,131 +38,142 @@
     </div>
     <!-- 点赞功能 -->
     <div class="buttonsWrapper">
-      <div class="btn btndianzhan" 
-      @click="hangou" :class="[!this.postDetail.like_length < 1 ? 'clas' : '' ]">
-        <span class="iconfont icondianzan"></span>{{postDetail.like_length}}
+      <div
+        class="btn btndianzhan"
+        @click="hangou"
+        :class="[!this.postDetail.like_length < 1 ? 'clas' : '' ]"
+      >
+        <span class="iconfont icondianzan"></span>
+        {{postDetail.like_length}}
       </div>
       <div class="btn weixin">
         <span class="iconfont iconweixin"></span>
       </div>
     </div>
-   
-      
-     <Comment @callreply="newhm" :commentData="item" v-for="item in commentList" :key="item.id"/>
-      <div class="gentie" @click="$router.push('/test/'+$route.params.id)">
+
+    <Commen  @callreply="newhm" :Data="item " v-for="item in commentList" :key="item.id" />
+    
+    <div class="gentie" @click="$router.push('/test/'+$route.params.id)">
       更多跟帖
-      <span class="iconfont  iconjiantou1 gtie"></span>
-      <span class="iconfont  iconjiantou1 gtie"></span>
+      <span class="iconfont iconjiantou1 gtie"></span>
+      <span class="iconfont iconjiantou1 gtie"></span>
     </div>
-    <CommentInput @reloadComment="loadComment" ref="commentInput" :parentInfo="commentInfo"/>
+
+    <CommentInput @reloadComment="loadComment" ref="commentInput" :parentInfo="commentInfo" />
   </div>
 </template>
 
 <script>
-
-import Comment from '../components/comment/main'
+// import Comment from '../components/comment/main'
 import CommentInput from '../components/comment/commentinput'
+import Commen from '../components/common/Index'
 export default {
-  components:{
-    Comment,
+  components: {
+    // Comment,
     CommentInput,
-
+    Commen
   },
   data() {
     return {
       postDetail: {},
-      commentList:[],
-      commentInfo:{}
+      commentList: [],
+      commentInfo: {}
     }
   },
   created() {
     this.$axios({
+      // 1.使用 url 上面带 的id 获取文章数据
       url: '/post/' + this.$route.params.id
     }).then(res => {
       // 将结果数据存到 data 中
       this.postDetail = res.data.data
     })
 
-   this.loadComment();
+    this.loadComment()
   },
-  methods:{
-    handclick(){
-      console.log('555');
-      if(this.postDetail.has_follow){
+  methods: {
+    handclick() {
+      console.log('555')
+      if (this.postDetail.has_follow) {
         // 取消关注
         // 发送请求
         this.$axios({
-          url:'/user_unfollow/' + this.postDetail.user.id
-        }).then(res=>{
-          console.log(res.data);
-           if (res.data.message === '取消关注成功') {
+          url: '/user_unfollow/' + this.postDetail.user.id
+        }).then(res => {
+          console.log(res.data)
+          if (res.data.message === '取消关注成功') {
             this.postDetail.has_follow = false
           }
         })
-      }else {
+      } else {
         // 关注
         this.$axios({
           url: '/user_follows/' + this.postDetail.user.id
-        }).then(res=>{
-          console.log(res.data);
+        }).then(res => {
+          console.log(res.data)
           // 3. 处理成功状况
           if (res.data.message === '关注成功') {
-            this.postDetail.has_follow = true;
+            this.postDetail.has_follow = true
           }
-          
         })
       }
     },
-    hangou(){
-        this.$axios({
-          url:'/post_like/' + this.postDetail.id
-        }).then(res=>{
-          if(res.data.message === "点赞成功"){
-            this.postDetail.like_length += 1
-          }else{
-            this.postDetail.like_length -= 1
-          }
-        })
+    hangou() {
+      this.$axios({
+        url: '/post_like/' + this.postDetail.id
+      }).then(res => {
+        if (res.data.message === '点赞成功') {
+          this.postDetail.like_length += 1
+        } else {
+          this.postDetail.like_length -= 1
+        }
+      })
     },
-      newhm(commentInfo){
+    newhm(commentInfo) {
       // 获取到id 存起来，再交给 输入框
-      this.commentInfo=commentInfo;
-        console.log('获取到了该回复的id');
-        this.$refs.commentInput.ShowTextarea()
+      this.commentInfo = commentInfo
+      console.log('获取到了该回复的id')
+      this.$refs.commentInput.ShowTextarea()
     },
-      loadComment(){
-         // 获取文章评论列表
-    this.$axios({
-      url:'/post_comment/' + this.$route.params.id
-    }).then(res=>{
-      
-     const commentList = res.data.data;
-     if(commentList.length > 3){
-       commentList.length = 3;
-     }
-      this.commentList=commentList
-    })
-    },
+
+    // 获取文章评论列表
+    loadComment() {
+      // 获取文章评论列表
+      this.$axios({
+        url: '/post_comment/' + this.$route.params.id
+      }).then(res => {
+        const commentList = res.data.data
+        if (commentList.length > 3) {
+          commentList.length = 3
+        }
+        this.commentList = commentList
+      })
+    }
   }
-  
 }
 </script>
 
 <style lang="less" scoped>
-
+.box {
+  width: 100%;
+  height: 100%;
+}
 .normalWrapper {
+  width: 100%;
+
   .header {
-    width: 100vw;
+    height: 50px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     background-color: #e0e0e0;
-    padding: 0 16px;
+    padding: 0 15px;
     box-sizing: border-box;
 
     .btnnew {
-      flex: 1;
+      display: flex;
+      align-items: center;
       .iconnew {
-        font-size: 54px;
       }
     }
     .btnFollow {
@@ -174,7 +182,7 @@ export default {
       font-size: 12px;
       border-radius: 10px;
       background-color: #e4e4e4;
-      &.highlight{
+      &.highlight {
         background-color: red;
         border-color: red;
         color: white;
@@ -186,22 +194,19 @@ export default {
   font-size: 14px;
   font-weight: bold;
   padding: 15px 16px;
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 .info {
-  
   font-size: 14px;
   color: #bbb;
   padding: 10px 16px;
   box-sizing: border-box;
 }
 /deep/ img {
-  
   width: 100%;
 }
 /deep/ .content {
   width: 100%;
-  
 }
 .buttonsWrapper {
   display: flex;
@@ -209,21 +214,20 @@ export default {
   padding: 40px 0 16px;
   align-items: center;
   border-bottom: 3px solid #e4e4e4;
-  
+
   .btn {
     border: 1px solid;
     font-size: 14px;
     height: 27px;
     line-height: 25px;
     padding: 0 16px;
-    .dz{
+    .dz {
       background-color: red;
       color: white;
     }
     border-radius: 16px;
-    .icondianzan{
-    margin-right: 4px;
-  
+    .icondianzan {
+      margin-right: 4px;
     }
 
     .iconweixin {
@@ -231,13 +235,12 @@ export default {
     }
   }
 }
-.mainContent{
-      padding: 0 16px;
-    }
+.mainContent {
+  padding: 0 16px;
+}
 .videoWrapper {
   .player {
     width: 100vw;
-    
   }
   .info {
     padding: 0 16px;
@@ -248,9 +251,8 @@ export default {
     .user {
       display: flex;
       align-content: center;
-      
     }
-    
+
     .btnFollw {
       border: 1px solid #e4e4e4;
       padding: 4px 10px;
@@ -274,17 +276,20 @@ export default {
 .gentie {
   display: flex;
   margin: 40px 0 80px;
-  
+
   justify-content: center;
   align-items: center;
   font-size: 14px;
   color: #bbb;
-  .gtie{
+  .gtie {
     margin-right: -10px;
   }
 }
-.clas{
+.clas {
   background: red;
   color: white;
+}
+.Newtitle{
+  font-size: 48px;
 }
 </style>

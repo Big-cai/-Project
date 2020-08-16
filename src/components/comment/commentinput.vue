@@ -15,7 +15,7 @@
     </div>
 
     <!-- 未激活 -->
-    <div class="footr" v-if="!isShowTextarea">
+    <!-- <div class="footr" v-if="!isShowTextarea">
       <div class="coninput">
         <input type="text" @focus="ShowTextarea" :value="content" :placeholder="palceholderText" />
         <span class="iconfont iconpinglun- fon"></span>
@@ -26,6 +26,10 @@
         <span class="iconfont iconfenxiang fon"></span>
       </div>
       <span class="xinxi">1024</span>
+    </div> -->
+      <div class="footer" v-if="!isShowTextarea">
+        <input type="text" :value="content" @focus="ShowTextarea" placeholder="评论">
+        <button>发送</button>
     </div>
   </div>
 </template>
@@ -57,7 +61,7 @@ export default {
  
   methods: {
     ShowTextarea() {
-      // 江苏局改为 true 让输入框弹出
+      // 将输入框改为 true 让输入框弹出
       this.isShowTextarea = true
   
       this.$nextTick(() => {
@@ -188,5 +192,37 @@ export default {
 }
 .clas{
   background: red;
+}
+
+// 新版
+.footer{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 13.889vw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #e7eaed;
+  box-sizing: border-box;
+  input{
+    height: 30px;
+    border-radius: 15px;
+    border: 1px solid #000;
+    padding-left: 20px;
+  }
+  button{
+    width: 60px;
+    background: #129646;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    color: white;
+    height: 30px;
+    line-height: 30px;
+    
+  }
 }
 </style>
