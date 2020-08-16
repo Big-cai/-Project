@@ -63,7 +63,7 @@ export default {
     height: 35px;
     object-fit: cover;
     border-radius: 50%;
-  }
+  } 
   .user {
     flex: 1;
     padding: 0 10px;
